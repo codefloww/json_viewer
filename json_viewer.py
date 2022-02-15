@@ -6,7 +6,17 @@ from _collections_abc import Iterable
 
 
 global_path = []
-def read_json(path):
+
+
+def read_json(path: str) -> object:
+    """reads json file and creates json object from it
+
+    Args:
+        path (str): path to json file
+
+    Returns:
+        json.object: json object from file
+    """
     if exists(path):
         try:
             with open(path, "r", encoding="utf-8") as file:
@@ -18,7 +28,12 @@ def read_json(path):
         print("There is no such path")
 
 
-def view_json(data):
+def view_json(data: object) -> None:
+    """handles naviagtion through the json object
+
+    Args:
+        data (json.object): json object from file to navigate through
+    """
     global global_path
     if isinstance(data, Iterable):
         view = input("Do you want to see (1)available entries or (2)actual file(1/2)\n")
@@ -34,7 +49,7 @@ def view_json(data):
                 view_json(data[entry])
             else:
                 print("There is no such entry in object")
-        elif isinstance(data, list):
+        elif isinstance(data, Iterable):
             if entry.isdecimal() and int(entry) < len(data) - 1:
                 global_path.append(int(entry))
                 view_json(data[int(entry)])
@@ -54,7 +69,12 @@ def view_json(data):
         sys.exit()
 
 
-def show_available_entries(data):
+def show_available_entries(data: object) -> None:
+    """shows keys of values of iterable object
+
+    Args:
+        data (object): object inside json object
+    """
     if isinstance(data, dict):
         available_keys = list(data.keys())
         print(*available_keys)
@@ -64,14 +84,28 @@ def show_available_entries(data):
         print(data)
 
 
-def open_key(data, key):
+def open_key(data: object, key: str) -> list:
+    """returns data within certain key or index
+
+    Args:
+        data (json.object): json object
+        key (str): key to dictionary or index for value
+
+    Returns:
+        list: values within key or index
+    """
     return data[key]
 
-def main(path):
+
+def main(path: str) -> None:
+    """handles work of module
+
+    Args:
+        path (str): path to json file
+    """
     data = read_json(path)
     view_json(data)
 
 
 if __name__ == "__main__":
     main("twitter2.json")
-
