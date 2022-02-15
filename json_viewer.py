@@ -108,4 +108,5 @@ def main(path: str) -> None:
 
 
 if __name__ == "__main__":
-    main("twitter2.json")
+    path = input("Please, print a path to json file")
+    main(path)
