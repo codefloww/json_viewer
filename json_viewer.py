@@ -26,9 +26,10 @@ def read_json(path: str) -> object:
             print("File doesn't contain json objects")
     else:
         print("There is no such path")
+        sys.exit()
 
 
-def view_json(data: object) -> None:
+def view_json(data: object, path) -> None:
     """handles naviagtion through the json object
 
     Args:
@@ -36,23 +37,30 @@ def view_json(data: object) -> None:
     """
     global global_path
     if isinstance(data, Iterable):
-        view = input("Do you want to see (1)available entries or (2)actual file(1/2)\n")
+        print("Do you want to see (1)available entries or (2)actual file(1/2)")
+        view = input()
         if view == "1":
             show_available_entries(data)
         elif view == "2":
             pprint.pprint(data)
             show_available_entries(data)
-        entry = input()
+        elif view == "exit":
+            sys.exit()
+        entry = input("Choose key: ")
+        while entry not in data.keys() and entry != 'exit':
+            entry = input("Choose key: ")
+        if entry == "exit":
+            sys.exit()
         if isinstance(data, dict):
             if entry in data.keys():
                 global_path.append(entry)
-                view_json(data[entry])
+                view_json(data[entry],path)
             else:
                 print("There is no such entry in object")
         elif isinstance(data, Iterable):
             if entry.isdecimal() and int(entry) < len(data) - 1:
                 global_path.append(int(entry))
-                view_json(data[int(entry)])
+                view_json(data[int(entry)],path)
             else:
                 print("There is no that much entries in object")
     else:
@@ -61,12 +69,15 @@ def view_json(data: object) -> None:
     print("do you want to return on previous level?(Y/exit)")
     user_exit = input()
     if user_exit in "Yy":
-        data = read_json("twitter1.json")
-        for layer in global_path[:-1]:
-            data = data[layer]
-        view_json(data)
+        data = read_json(path)
+        if global_path != []:
+            for layer in global_path[:-1]:
+                data = data[layer]
+            view_json(data,path)
+        else:
+            view_json(data,path)
     else:
-        sys.exit()
+            sys.exit()
 
 
 def show_available_entries(data: object) -> None:
@@ -103,10 +114,10 @@ def main(path: str) -> None:
     Args:
         path (str): path to json file
     """
+    path = input("Please, print a path to json file\n")
     data = read_json(path)
-    view_json(data)
+    view_json(data, path)
 
 
 if __name__ == "__main__":
-    path = input("Please, print a path to json file")
-    main(path)
+    main('twitter2.json')
