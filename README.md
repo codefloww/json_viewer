@@ -1,4 +1,4 @@
-# Json Guide
+# Json Viewer
 This program organises a navigation(view) in a json file.
 
 ## Example
