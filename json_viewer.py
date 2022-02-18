@@ -47,20 +47,20 @@ def view_json(data: object, path) -> None:
         elif view == "exit":
             sys.exit()
         entry = input("Choose key: ")
-        while entry not in data.keys() and entry != 'exit':
+        while entry not in data.keys() and entry != "exit":
             entry = input("Choose key: ")
         if entry == "exit":
             sys.exit()
         if isinstance(data, dict):
             if entry in data.keys():
                 global_path.append(entry)
-                view_json(data[entry],path)
+                view_json(data[entry], path)
             else:
                 print("There is no such entry in object")
         elif isinstance(data, Iterable):
             if entry.isdecimal() and int(entry) < len(data) - 1:
                 global_path.append(int(entry))
-                view_json(data[int(entry)],path)
+                view_json(data[int(entry)], path)
             else:
                 print("There is no that much entries in object")
     else:
@@ -73,11 +73,11 @@ def view_json(data: object, path) -> None:
         if global_path != []:
             for layer in global_path[:-1]:
                 data = data[layer]
-            view_json(data,path)
+            view_json(data, path)
         else:
-            view_json(data,path)
+            view_json(data, path)
     else:
-            sys.exit()
+        sys.exit()
 
 
 def show_available_entries(data: object) -> None:
@@ -120,4 +120,4 @@ def main(path: str) -> None:
 
 
 if __name__ == "__main__":
-    main('twitter2.json')
+    main("twitter2.json")
